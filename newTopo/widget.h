@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "newwidget.h"
+#include "addcoursegui.h"
 
 #include <QFileDialog>
 
@@ -23,5 +24,6 @@ public:
 private:
     Ui::Widget *ui;
     newwidget *ppage = NULL;
+    AddCourseGUI *addcoursegui_page = NULL;
 };
 #endif // WIDGET_H

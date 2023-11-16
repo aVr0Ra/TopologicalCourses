@@ -1,6 +1,7 @@
 #include "widget.h"
 #include "ui_widget.h"
 #include "newwidget.h"
+#include "addcoursegui.h"
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -66,16 +67,54 @@ Widget::Widget(QWidget *parent)
 {
     ui->setupUi(this);
 
-    this->resize(800 , 600);
+    this->setFixedSize(800 , 600);
+    this->setWindowTitle("课程管理系统，by 易思铭21071125");
 
-    QPushButton *pb , *selectfile;
-    pb = new QPushButton("显示选课结果拓扑图");
+    QPushButton *pb , *selectfile , *addfromGUI , *showschedule;
+
+    addfromGUI = new QPushButton("从GUI中添加课程先后关系");
+    addfromGUI->setFixedSize(200 , 50);
+    //addfromGUI->move(100 , 100);
+
     selectfile = new QPushButton("从文件读入数据");
+    selectfile->setFixedSize(100 , 50);
+    //selectfile->move(200 , 200);
 
-    QVBoxLayout *vbox = new QVBoxLayout;
-    vbox->addWidget(selectfile);
-    vbox->addWidget(pb);
-    this->setLayout(vbox);
+    pb = new QPushButton("显示选课结果拓扑图");
+    pb->setFixedSize(200 , 50);
+    //pb->move(300 , 300);
+
+    showschedule = new QPushButton("显示课程安排");
+    showschedule->setFixedSize(200 , 50);
+
+    //QPixmap *img = new QPixmap;
+    //img->load(":/images/top.png");
+
+    QLabel *titleimage = new QLabel("标题图片");
+    titleimage->setPixmap(QPixmap(":/images/top.png"));
+
+
+
+    QHBoxLayout *hbox = new QHBoxLayout;
+    QHBoxLayout *first_row_img = new QHBoxLayout;
+
+    first_row_img->addWidget(titleimage);
+
+    hbox->addWidget(addfromGUI);
+    hbox->addWidget(selectfile);
+    hbox->addWidget(pb);
+    hbox->addWidget(showschedule);
+
+
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+
+    QLabel *titlelabel = new QLabel("课程管理系统，by 易思铭21071125");
+
+    mainLayout->addWidget(titlelabel);
+    mainLayout->addLayout(first_row_img);
+    mainLayout->addLayout(hbox);
+
+    this->setLayout(mainLayout);
 
 
     connect(selectfile , &QPushButton::clicked , [=](){
@@ -245,8 +284,6 @@ Widget::Widget(QWidget *parent)
     });
 
 
-
-
     connect(pb , &QPushButton::clicked , [=](){
         this->ppage = new newwidget;
         //this->hide();
@@ -254,7 +291,15 @@ Widget::Widget(QWidget *parent)
 
         connect(this->ppage , &newwidget::back , [=](){
             this->ppage->hide();
-            //this->show();
+        });
+    });
+
+    connect(addfromGUI , &QPushButton::clicked , [=](){
+        this->addcoursegui_page = new AddCourseGUI;
+        this->addcoursegui_page->show();
+
+        connect(this->addcoursegui_page , &AddCourseGUI::back , [=](){
+            this->addcoursegui_page->hide();
         });
     });
 }

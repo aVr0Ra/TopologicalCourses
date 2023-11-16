@@ -57,14 +57,22 @@ newwidget::newwidget(QWidget *parent) :
     ui->setupUi(this);
 
     this->resize(800 , 600);
+    this->setWindowTitle("查看拓扑图");
 
-    QPushButton *ret;
-    ret = new QPushButton("return" , this);
+    QPushButton *ret = new QPushButton("返回", this);
 
-    ret->setGeometry(0 , 550 , 800 , 50);
-    //ret->show();
 
-    connect(ret , &QPushButton::clicked , [=](){
+    QVBoxLayout *layout = new QVBoxLayout(this);
+
+    layout->addStretch(1);
+
+    ret->setMinimumSize(600, 50);
+
+    layout->addWidget(ret, 0, Qt::AlignHCenter);
+
+    this->setLayout(layout);
+
+    connect(ret, &QPushButton::clicked, [=](){
         emit this->back();
     });
 }

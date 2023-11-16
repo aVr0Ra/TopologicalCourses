@@ -382,7 +382,8 @@ Makefile: ../newTopo/newTopo.pro C:/Qt/6.7.0/mingw_64/mkspecs/win32-g++/qmake.co
 		C:/Qt/6.7.0/mingw_64/lib/Qt6Gui.prl \
 		C:/Qt/6.7.0/mingw_64/lib/Qt6Core.prl \
 		C:/Qt/6.7.0/mingw_64/lib/Qt6EntryPoint.prl \
-		C:/Qt/6.7.0/mingw_64/mkspecs/features/build_pass.prf
+		C:/Qt/6.7.0/mingw_64/mkspecs/features/build_pass.prf \
+		../newTopo/images.qrc
 	$(QMAKE) -o Makefile ..\newTopo\newTopo.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
 C:/Qt/6.7.0/mingw_64/mkspecs/features/spec_pre.prf:
 C:/Qt/6.7.0/mingw_64/mkspecs/features/device_config.prf:
@@ -697,6 +698,7 @@ C:/Qt/6.7.0/mingw_64/lib/Qt6Gui.prl:
 C:/Qt/6.7.0/mingw_64/lib/Qt6Core.prl:
 C:/Qt/6.7.0/mingw_64/lib/Qt6EntryPoint.prl:
 C:/Qt/6.7.0/mingw_64/mkspecs/features/build_pass.prf:
+../newTopo/images.qrc:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ..\newTopo\newTopo.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
 
