@@ -302,6 +302,15 @@ Widget::Widget(QWidget *parent)
             this->addcoursegui_page->hide();
         });
     });
+
+    connect(showschedule , &QPushButton::clicked , [=](){
+        this->curSchedule = new schedule;
+        this->curSchedule->show();
+
+        connect(this->curSchedule , &schedule::back , [=](){
+            this->curSchedule->hide();
+        });
+    });
 }
 
 Widget::~Widget()

@@ -64,7 +64,24 @@ private slots:
 
         mainLayout->addRow(entryWidget);
 
-        connect(confirmButton, &QPushButton::clicked, [=](){
+        /*connect(confirmButton, &QPushButton::clicked, [=](){
+            addEntry();
+        });*/
+
+        connect(confirmButton, &QPushButton::clicked, this, [this, lineEdit1, lineEdit2](){
+            QString line1 = lineEdit1->text();
+            QString line2 = lineEdit2->text();
+            QFile file("in.txt");
+
+            if(file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text)) {
+                QTextStream stream(&file);
+                stream << line1 << " " << line2 << "\n";
+                file.close();
+            }
+            else {
+                qDebug() << "Cannot open file for writing";
+            }
+
             addEntry();
         });
     }

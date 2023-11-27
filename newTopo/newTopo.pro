@@ -10,18 +10,24 @@ CONFIG += c++17
 
 SOURCES += \
     addcoursegui.cpp \
+    creditsandlimitations.cpp \
     main.cpp \
     newwidget.cpp \
+    schedule.cpp \
     widget.cpp
 
 HEADERS += \
     addcoursegui.h \
+    creditsandlimitations.h \
     newwidget.h \
+    schedule.h \
     widget.h
 
 FORMS += \
     addcoursegui.ui \
+    creditsandlimitations.ui \
     newwidget.ui \
+    schedule.ui \
     widget.ui
 
 # Default rules for deployment.

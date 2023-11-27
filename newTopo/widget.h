@@ -4,6 +4,7 @@
 #include <QWidget>
 #include "newwidget.h"
 #include "addcoursegui.h"
+#include "schedule.h"
 
 #include <QFileDialog>
 
@@ -25,5 +26,6 @@ private:
     Ui::Widget *ui;
     newwidget *ppage = NULL;
     AddCourseGUI *addcoursegui_page = NULL;
+    schedule *curSchedule = NULL;
 };
 #endif // WIDGET_H

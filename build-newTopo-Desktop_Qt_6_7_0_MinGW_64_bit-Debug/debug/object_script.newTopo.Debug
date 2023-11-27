@@ -1,0 +1,12 @@
+debug/addcoursegui.o
+debug/creditsandlimitations.o
+debug/main.o
+debug/newwidget.o
+debug/schedule.o
+debug/widget.o
+debug/qrc_images.o
+debug/moc_addcoursegui.o
+debug/moc_creditsandlimitations.o
+debug/moc_newwidget.o
+debug/moc_schedule.o
+debug/moc_widget.o

@@ -56,7 +56,7 @@ newwidget::newwidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    this->resize(800 , 600);
+    this->resize(1600 , 900);
     this->setWindowTitle("查看拓扑图");
 
     QPushButton *ret = new QPushButton("返回", this);

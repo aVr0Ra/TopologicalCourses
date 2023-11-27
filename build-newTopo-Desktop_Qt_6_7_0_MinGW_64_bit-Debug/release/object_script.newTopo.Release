@@ -1,0 +1,12 @@
+release/addcoursegui.o
+release/creditsandlimitations.o
+release/main.o
+release/newwidget.o
+release/schedule.o
+release/widget.o
+release/qrc_images.o
+release/moc_addcoursegui.o
+release/moc_creditsandlimitations.o
+release/moc_newwidget.o
+release/moc_schedule.o
+release/moc_widget.o
