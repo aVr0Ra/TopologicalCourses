@@ -22,6 +22,7 @@
 #include <QFont>
 #include <QColor>
 #include <QTableWidget>
+#include <QMessageBox>
 
 #include <iostream>
 #include <cstdio>
@@ -59,6 +60,7 @@ bool cmp(DepthNode a , DepthNode b) {
     return a.depth < b.depth;
 }
 
+
 schedule::schedule(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::schedule)
@@ -67,12 +69,14 @@ schedule::schedule(QWidget *parent) :
 
     qDebug() << "schedule.cpp started";
 
+
+    QString CSVschedule[10][10][10];
+
     this->setFixedSize(1920 , 1080);
     this->setWindowTitle("查看预设课程表");
 
     //setting layout
     QGridLayout *layout = new QGridLayout(this);
-    QPushButton *ret = new QPushButton("返回", this);
 
 
     // processing depth
@@ -128,16 +132,16 @@ schedule::schedule(QWidget *parent) :
 
     linecount --;
 
-    qDebug() << "linecount = " << linecount;
+    //qDebug() << "linecount = " << linecount;
 
     depthFile.close();
 
     //depth debug
-
+/*
     for (int i = 1 ; i <= linecount ; i ++) {
         qDebug() << dn[i].name << " " << dn[i].depth;
     }
-
+*/
     sort(dn + 1 , dn + linecount + 1 , cmp);
 
     int nodecount = linecount;
@@ -145,6 +149,13 @@ schedule::schedule(QWidget *parent) :
     int gridrow = 0 , gridcolumn = 0;
 
     string numbers[9] = {"" , "一" , "二" , "三" , "四" , "五" , "六" , "七" , "八"};
+
+    QStringList vheaders;
+    vheaders << "1+2" << "3+4" << "5+6" << "7+8" << "9+10" << "11+12";
+    QStringList hheaders;
+    hheaders << "一" << "二" << "三" << "四" << "五" << "六" << "日";
+
+    // making table
 
     for (int i = 1 ; i <= 8 ; i ++) {
         QVBoxLayout *curTableLayout = new QVBoxLayout;
@@ -160,23 +171,18 @@ schedule::schedule(QWidget *parent) :
 
 
         QTableWidget *tableWidget = new QTableWidget(this);
-        tableWidget->setRowCount(7); // 设置行数
+        tableWidget->setRowCount(6); // 设置行数
         tableWidget->setColumnCount(7); // 设置列数
 
-        // 设置行列 headers
-        QStringList hheaders;
-        hheaders << "一" << "二" << "三" << "四" << "五" << "六" << "日";
-        tableWidget->setHorizontalHeaderLabels(hheaders);
 
-        QStringList vheaders;
-        vheaders << "" << "1+2" << "3+4" << "5+6" << "7+8" << "9+10" << "11+12";
+        tableWidget->setHorizontalHeaderLabels(hheaders);
         tableWidget->setVerticalHeaderLabels(vheaders);
 
-        for (int j = 0 ; j < 7 ; j ++) {
-            tableWidget->setRowHeight(j , 43);
+        for (int j = 0 ; j < 6 ; j ++) {
+            tableWidget->setRowHeight(j , 50);
         }
 
-        for (int j = 0 ; j < 8 ; j ++) {
+        for (int j = 0 ; j < 7 ; j ++) {
             tableWidget->setColumnWidth(j , 83);
         }
 
@@ -190,6 +196,8 @@ schedule::schedule(QWidget *parent) :
             if (dn[node].depth == i) {
                 tableWidget->setItem(mapx[curDepthCourseCount] - 1 , mapy[curDepthCourseCount] - 1 ,
                                      new QTableWidgetItem(dn[node].name));
+
+                CSVschedule[i][mapx[curDepthCourseCount] - 1][mapy[curDepthCourseCount] - 1] = dn[node].name;
 
                 curDepthCourseCount ++;
             }
@@ -205,14 +213,119 @@ schedule::schedule(QWidget *parent) :
         }
     }
 
-    layout->addWidget(ret);
 
+    //last grid with 2 buttons
+    QPushButton *ret = new QPushButton("直接返回");
+    QPushButton *savecsv = new QPushButton("保存以上课表CSV文件并返回");
+    QVBoxLayout *verticalLayout = new QVBoxLayout;
+
+    ret->setFixedSize(200, 50);
+    savecsv->setFixedSize(200, 50);
+
+    QHBoxLayout *hLayout1 = new QHBoxLayout;
+    hLayout1->addStretch();
+    hLayout1->addWidget(ret);
+    hLayout1->addStretch();
+
+    QHBoxLayout *hLayout2 = new QHBoxLayout;
+    hLayout2->addStretch();
+    hLayout2->addWidget(savecsv);
+    hLayout2->addStretch();
+
+    verticalLayout->addStretch();
+    verticalLayout->addLayout(hLayout1);
+    verticalLayout->addLayout(hLayout2);
+    verticalLayout->addStretch();
+
+    layout->addLayout(verticalLayout, 2, 2);
+
+    //set layout
 
     this->setLayout(layout);
 
 
-    //返回按钮
+    //ret button
     connect(ret, &QPushButton::clicked, [=](){
+        emit this->back();
+    });
+
+    //save button
+    connect(savecsv , &QPushButton::clicked , [this , CSVschedule , numbers](){
+        QStringList vheaders;
+        vheaders << "1+2" << "3+4" << "5+6" << "7+8" << "9+10" << "11+12";
+        QStringList hheaders;
+        hheaders << "" <<  "一" << "二" << "三" << "四" << "五" << "六" << "日";
+
+        QString fileName;
+
+        while (true) {
+            fileName = QFileDialog::getSaveFileName(this, "保存文件", "", "CSV 文件 (*.csv)");
+            if (fileName.isEmpty()) {
+                return;
+            }
+
+            if (QFileInfo::exists(fileName)) {
+                int ret = QMessageBox::warning(this, "文件已存在",
+                                       "指定的文件已存在。您要覆盖它吗？",
+                                               QMessageBox::Yes | QMessageBox::No);
+
+                if (ret == QMessageBox::Yes) {
+                    break;
+                }
+            }
+            else break;
+        }
+
+        QFile file(fileName);
+        if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            QTextStream stream(&file);
+
+            const char utf8bom[] = { char(0xEF), char(0xBB), char(0xBF) };
+            file.write(utf8bom, sizeof(utf8bom));
+
+            //QStringList data = {"Name,Score,Date", "Alice,90,2021-01-01", "Bob,85,2021-01-02"};
+
+            QStringList data;
+
+            for (int i = 1 ; i <= 8 ; i ++) {
+                // 第 x 学期课表
+                QString qslabel = "";
+                qslabel.append("第");
+                qslabel.append(numbers[i]);
+                qslabel.append("学期课表");
+                data.append(qslabel);
+
+                // 一~日
+                QString curHHeader = hheaders.join(",");
+                data.append(curHHeader);
+
+                for (int j = 0 ; j < 6 ; j ++) {
+                    QStringList curLineList;
+                    curLineList.append(vheaders[j]);
+
+                    for (int k = 0 ; k < 7 ; k ++) {
+                        curLineList.append(CSVschedule[i][j][k]);
+                    }
+
+                    QString curLine = curLineList.join(",");
+                    data.append(curLine);
+                }
+
+                data.append("\n");
+            }
+
+            foreach (const QString &line, data) {
+                stream << line << "\n";
+            }
+
+            file.close();
+        }
+        else {
+            QMessageBox::warning(this, "错误", "无法打开文件进行写入。");
+        }
+
+        QMessageBox::information(this, "保存成功", "文件已成功保存！");
+
         emit this->back();
     });
 }
