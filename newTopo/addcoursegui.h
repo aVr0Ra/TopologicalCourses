@@ -31,6 +31,8 @@
 #include <vector>
 #include <map>
 
+#include "creditsandlimitations.h"
+
 namespace Ui {
 class AddCourseGUI;
 }
@@ -94,6 +96,8 @@ public:
 
 private:
     Ui::AddCourseGUI *ui;
+
+    CreditsAndLimitations *cal = NULL;
 };
 
 

@@ -215,7 +215,7 @@ schedule::schedule(QWidget *parent) :
 
 
     //last grid with 2 buttons
-    QPushButton *ret = new QPushButton("直接返回");
+    QPushButton *ret = new QPushButton("不保存以上课表，直接返回");
     QPushButton *savecsv = new QPushButton("保存以上课表CSV文件并返回");
     QVBoxLayout *verticalLayout = new QVBoxLayout;
 

@@ -21,6 +21,7 @@
 #include <QBrush>
 #include <QFont>
 #include <QColor>
+#include <QString>
 
 #include <iostream>
 #include <cstdio>
@@ -55,6 +56,9 @@ newwidget::newwidget(QWidget *parent) :
     ui(new Ui::newwidget)
 {
     ui->setupUi(this);
+
+
+    qDebug() << "\n!!! Topo Graph Begins !!!";
 
     this->resize(1600 , 900);
     this->setWindowTitle("查看拓扑图");

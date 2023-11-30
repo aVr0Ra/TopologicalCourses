@@ -61,6 +61,40 @@ void dfs(Node node[] , int n , int m , int now , int depth) {
 }
 
 
+/*
+class Node {
+public:
+    QByteArray name;
+    int ind , outd;
+    int countedges;
+    int id;
+    int credits;
+
+    int destinations[100];
+    int depth = 0;
+};
+
+void dfs(Node node[] , int now , int depth , int depthLimits[]) {
+    if (node[now].depth >= depth) {
+        return ;
+    }
+
+    if (depthLimits[depth] < node[now].credits) {
+        dfs(node , now , depth + 1 , depthLimits);
+        return ;
+    }
+
+    node[now].depth = depth;
+    depthLimits[depth] -= node[now].credits;
+
+    for (int i = 1 ; i <= node[now].countedges ; i ++) {
+        dfs(node , node[now].destinations[i] , depth + 1 , depthLimits);
+    }
+
+    return ;
+}
+*/
+
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Widget)

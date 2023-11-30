@@ -1,5 +1,6 @@
 #include "addcoursegui.h"
 #include "ui_addcoursegui.h"
+#include "creditsandlimitations.h"
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -30,7 +31,7 @@
 #include <map>
 
 using namespace std;
-
+/*
 class Node {
 public:
     QByteArray name;
@@ -55,7 +56,7 @@ void dfs(Node node[] , int now , int depth) {
 
     return ;
 }
-
+*/
 AddCourseGUI::AddCourseGUI(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::AddCourseGUI)
@@ -82,19 +83,12 @@ AddCourseGUI::AddCourseGUI(QWidget *parent) :
     scrollarea->setWidget(mainWidget); // 将mainWidget设置为scrollarea的子widget
     scrollarea->setWidgetResizable(true); // 允许scrollarea根据内容调整大小
 
-    /*第一行：每学期最大学分，横向布局管理器*/
-    QLabel *maxCreditlabel = new QLabel("每学期最大学分：");
-    maxCreditlabel->setFixedSize(100 , 30);
 
-    QLineEdit *maxCredit = new QLineEdit;
-    maxCredit->setFixedSize(100 , 30);
 
     QPushButton *confirm = new QPushButton("确认所有先修关系信息");
-    confirm->setFixedSize(550 , 30);
+    confirm->setFixedSize(750 , 30);
 
     QHBoxLayout *maxCreditLayout = new QHBoxLayout;
-    maxCreditLayout->addWidget(maxCreditlabel);
-    maxCreditLayout->addWidget(maxCredit);
     maxCreditLayout->addWidget(confirm);
     maxCreditLayout->addStretch(1);
 
@@ -113,7 +107,7 @@ AddCourseGUI::AddCourseGUI(QWidget *parent) :
 
     //设置槽函数连接，进行dfs
     connect(confirm, &QPushButton::clicked, [=](){
-        QByteArray pathfrom[100] , pathto[100];
+        /*QByteArray pathfrom[100] , pathto[100];
 
         QFile inputfile("in.txt");
         if (!inputfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -238,10 +232,18 @@ AddCourseGUI::AddCourseGUI(QWidget *parent) :
 
         outputFile.close();
         inputfile.close();
+*/
+
+        // 显示限制页面
+        this->cal = new CreditsAndLimitations;
+        this->cal->show();
+        this->hide();
+
+        connect(this->cal , &CreditsAndLimitations::back , [=](){
+            this->cal->hide();
+        });
 
 
-
-        QMessageBox::information(this , "确认" , "信息已确认");
         emit this->back();
     });
 }
